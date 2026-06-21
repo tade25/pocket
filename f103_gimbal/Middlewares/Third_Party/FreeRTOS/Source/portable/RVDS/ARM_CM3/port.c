@@ -408,25 +408,25 @@ __asm void xPortPendSVHandler( void )
 }
 /*-----------------------------------------------------------*/
 
-// void xPortSysTickHandler( void )
-// {
-// 	/* The SysTick runs at the lowest interrupt priority, so when this interrupt
-// 	executes all interrupts must be unmasked.  There is therefore no need to
-// 	save and then restore the interrupt mask value as its value is already
-// 	known - therefore the slightly faster vPortRaiseBASEPRI() function is used
-// 	in place of portSET_INTERRUPT_MASK_FROM_ISR(). */
-// 	vPortRaiseBASEPRI();
-// 	{
-// 		/* Increment the RTOS tick. */
-// 		if( xTaskIncrementTick() != pdFALSE )
-// 		{
-// 			/* A context switch is required.  Context switching is performed in
-// 			the PendSV interrupt.  Pend the PendSV interrupt. */
-// 			portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT;
-// 		}
-// 	}
-// 	vPortClearBASEPRIFromISR();
-// }
+void xPortSysTickHandler( void )
+{
+	/* The SysTick runs at the lowest interrupt priority, so when this interrupt
+	executes all interrupts must be unmasked.  There is therefore no need to
+	save and then restore the interrupt mask value as its value is already
+	known - therefore the slightly faster vPortRaiseBASEPRI() function is used
+	in place of portSET_INTERRUPT_MASK_FROM_ISR(). */
+	vPortRaiseBASEPRI();
+	{
+		/* Increment the RTOS tick. */
+		if( xTaskIncrementTick() != pdFALSE )
+		{
+			/* A context switch is required.  Context switching is performed in
+			the PendSV interrupt.  Pend the PendSV interrupt. */
+			portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT;
+		}
+	}
+	vPortClearBASEPRIFromISR();
+}
 /*-----------------------------------------------------------*/
 
 #if( configUSE_TICKLESS_IDLE == 1 )
