@@ -43,12 +43,12 @@
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
 
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+/* Definitions for motorCtrlTask */
+osThreadId_t motorCtrlTaskHandle;
+const osThreadAttr_t motorCtrlTask_attributes = {
+  .name = "motorCtrlTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal3,
 };
 /* Definitions for imuTask */
 osThreadId_t imuTaskHandle;
@@ -65,7 +65,7 @@ const osThreadAttr_t imuTask_attributes = {
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
-void StartDefaultTask(void *argument);
+void StartMotorCtrlTask(void *argument);
 void StartImuTask(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -131,8 +131,8 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of motorCtrlTask */
+  motorCtrlTaskHandle = osThreadNew(StartMotorCtrlTask, NULL, &motorCtrlTask_attributes);
 
   /* creation of imuTask */
   imuTaskHandle = osThreadNew(StartImuTask, NULL, &imuTask_attributes);
@@ -269,14 +269,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartMotorCtrlTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the motorCtrlTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartMotorCtrlTask */
+void StartMotorCtrlTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
