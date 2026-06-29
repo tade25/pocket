@@ -3,6 +3,7 @@
 
 #include "i2c_core.h"
 
-extern i2c_bus_t* BSP_I2C_GetBus(void);
+extern i2c_bus_t* Bsp_I2C_GetBus(void);
+extern void Bsp_I2C_Init(void);
 
 #endif

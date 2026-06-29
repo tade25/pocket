@@ -10,8 +10,9 @@ static uint8_t Bsp_Mpu6050_WriteReg(uint8_t dev_addr, uint8_t reg, uint8_t data)
 
 static uint8_t Bsp_Mpu6050_ReadReg(uint8_t dev_addr, uint8_t reg, uint8_t* buf, uint8_t len)
 {
+    i2c_bus_t* i2c_bus = Bsp_I2C_GetBus();
 
-    return 0;
+    return (uint8_t)i2c_master_transfer(i2c_bus, dev_addr, &reg, 1, buf, len);
 }
 
 static const Mpu6050_BusOpsType Mpu6050_valBusOps_Mp = {
@@ -19,7 +20,7 @@ static const Mpu6050_BusOpsType Mpu6050_valBusOps_Mp = {
     .read_reg = Bsp_Mpu6050_ReadReg,
 };
 
-static Mpu6050_DevType_t Mpu6050_valDev_Mp = {
+static const Mpu6050_DevType_t Mpu6050_valDev_Mp = {
     .bus_ops = &Mpu6050_valBusOps_Mp,
     .dev_addr = 0x68,
 };

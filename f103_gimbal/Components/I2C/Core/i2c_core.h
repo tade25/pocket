@@ -2,6 +2,7 @@
 #define __I2C_CORE_H_
 
 #include <stdint.h>
+#include <stddef.h>
 
 typedef enum {
     I2C_ERR_OK = 0,
@@ -28,7 +29,7 @@ typedef struct
 struct i2c_bus
 {
     i2c_config_t config;
-    i2c_hw_ops_t hal_ops;
+    i2c_hw_ops_t* hal_ops;
     void* user_data;
 };
 
